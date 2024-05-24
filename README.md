@@ -1,3 +1,93 @@
+# Kari-Antti Seppälä santa-app Documentation
+
+client = React Ui
+server = backend api
+
+! NOTICE !
+I DEVELOPED THIS COMPLETELY LOCALLY, NOT SURE IF GLITCH SUPPORTS 2 TERMINALS FOR THE SAME PAGE
+
+run client with 'npm start' under app/client
+run server with 'npm start' under app/server
+
+I updated the express to ES6 to allow importing and typescript.
+This took way longer than I thought, about 2-3 hours.
+First time working with js backend for couple of years, was fun though.
+I think I'm going to check some React backend framework next, I think
+
+I've been in a front end heavy role for the last 1,5 years at Nomura so I think I put more effort on that side aside from styling.
+I do have interest in full stack development, but doing assignment during work week with family meant that I had to cut some corners.
+
+# Things I would improve in UI in no particular order
+
+1. Proper authentication, now only username is used.
+2. proper form validation and error messages
+3. styling in general
+4. protected paths for login / register, currently already logged in user can register a new user and try to log in again
+5. Handling errors is completely TODO
+6. Instead of redirecting to error pages, maybe I would popup a toast
+7. Fix login page, no error if username is not found
+
+# Things I would improve in Server in no particular order
+
+1. Come up with some kind of authentication thats managed by server, jwt token of some kind.
+2. Generally returning responses from the api, I think the approach I took was not the best. Backend is not my strongest suit.
+3. Just DB or similar solution in general, now all data are saved to arrays. Faced issues with racing conditions when refetching data etc.
+   Feel like I had to come up with tricks and hacks just to make it work, would have preferred DB but ran out of time.
+4. Handling santa message related errors could be better.
+
+# How my changes achieve affected the objective
+
+Due to my changes in the ui, some of the objectives cannot be completed IN A WAY THEY WERE REQUESTED IN OBJECTS OVERVIEW
+I made sure that the functionality matches the objective though.
+
+# FROM OBJECTIVE:
+
+The webapp should display a form for children to enter their id and a free text message to santa.
+When submitting the form, the server should check:
+
+1.  that the child is registered
+2.  that the child is less than 10 years old.
+    To this purpose, the server can fetch user and profiles data in JSON format from:
+
+- https://raw.githubusercontent.com/alj-devops/santa-data/master/userProfiles.json
+- https://raw.githubusercontent.com/alj-devops/santa-data/master/users.json
+
+If the child is not registered (no match for the user id) or more than 10years old, the webapp should display a basic error page with an error message explaining the problem.\
+If the child is registered and less than 10 years old, the server should show a page indicating that the request has been received.
+
+# MY CHANGES RELATED TO THE OBJECTIVE
+
+1. User cannot send message to santa without registering or logging in.
+   I felt like that under 10 years old would not want to remember id that is in form of: "730b0804-72c7-11e9-a923-1681be663d3e"
+   So user has to register and input:
+   Username, Birthday and Address
+   After inputting username availability is checked, it has to be unique.
+   After registering successfully user is logged in automatically.
+
+   If user has already account, he/she can login with just username. Proper authentication with password is yet to be implemented.
+
+   So due to these changes:
+   Santa message form has field only for the message, username is taken from the logged in user.
+   In the backend user is fetched from the users array and his / her age is checked.
+   If user is over 10, user is redirected to error page.
+   If user is under 10, the message is saved.
+
+# Libraries I installed and why
+
+Client
+
+1. React Router - allows routing for different urls
+2. react-hook-form - good library for creating forms quickly
+3. react-datepicker - installed react-datepicker so I dont have to deal with html datepicker, usually I would use whatever ui frameworks date picker I have access to
+4. tanstack/react-query - used this assignment as a possibility to learn new library
+5. axios - used to communicate with server
+
+Server
+
+1. uuid to create unique ids
+2. luxon, dealing with timezones and dates is painful without a library
+3. nodemailer - used to send the emails, taken straight from https://ethereal.email/
+
 # IMPORTANT! READ before starting
 
 By default for anonymous users (non logged in), your code and app will only remain on glitch.com for 5 days.
